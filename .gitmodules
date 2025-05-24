@@ -1,0 +1,3 @@
+[submodule "thrid-party/gtest"]
+	path = thrid-party/gtest
+	url = https://github.com/google/googletest

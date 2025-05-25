@@ -1,0 +1,189 @@
+$ mkdir third-party
+$ git submodule add https://github.com/google/googletest third-party/gtest
+Cloning into '/klich26/workspace/projects/lab05/thrid-party/gtest'...
+remote: Enumerating objects: 28100, done.
+remote: Counting objects: 100% (318/318), done.
+remote: Compressing objects: 100% (200/200), done.
+remote: Total 28100 (delta 203), reused 125 (delta 113), pack-reused 27782 (from 4)
+Receiving objects: 100% (28100/28100), 13.58 MiB | 8.33 MiB/s, done.
+Resolving deltas: 100% (20811/20811), done.
+
+
+$ cd third-party/gtest && git checkout release-1.8.1 && cd ../..
+$ git add third-party/gtest
+$ git commit -m"added gtest framework"
+master 6eac1ad] added gtest framework
+ 2 files changed, 4 insertions(+)
+ create mode 100644 .gitmodules
+ create mode 160000 thrid-party/gtest
+
+$ sed -i '/option(BUILD_EXAMPLES "Build examples" OFF)/a\
+> option(BUILD_TESTS "Build tests" OFF)
+> CMakeLists.txt
+
+$nano CMakeLists.txt
+
+$ cmake -H. -B_build -DBUILD_TEST=ON
+CMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.5 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+CMake Deprecation Warning at thrid-party/gtest/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.5 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+CMake Deprecation Warning at thrid-party/gtest/googlemock/CMakeLists.txt:42 (cmake_minimum_required):
+  Compatibility with CMake < 3.5 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+CMake Deprecation Warning at thrid-party/gtest/googletest/CMakeLists.txt:49 (cmake_minimum_required):
+  Compatibility with CMake < 3.5 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+CMake Warning (dev) at thrid-party/gtest/googletest/cmake/internal_utils.cmake:239 (find_package):
+  Policy CMP0148 is not set: The FindPythonInterp and FindPythonLibs modules
+  are removed.  Run "cmake --help-policy CMP0148" for policy details.  Use
+  the cmake_policy command to set the policy and suppress this warning.
+
+Call Stack (most recent call first):
+  thrid-party/gtest/googletest/CMakeLists.txt:84 (include)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /klich26/workspace/projects/lab05/_build
+
+
+$cmake --build _build
+[ 16%] Built target print
+[ 25%] Building CXX object third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/src/gtest-all.cc.o
+In file included from /klich26/workspace/projects/lab05/third-party/gtest/googletest/src/gtest-all.cc:42:
+/klich26/workspace/projects/lab05/third-party/gtest/googletest/src/gtest-death-test.cc: In function ‘bool testing::internal::StackGrowsDown()’:
+/klich26/workspace/projects/lab05/third-party/gtest/googletest/src/gtest-death-test.cc:1224:24: warning: ‘dummy’ may be used uninitialized [-Wmaybe-uninitialized]
+ 1224 |   StackLowerThanAddress(&dummy, &result);
+      |   ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~
+/klich26/workspace/projects/lab05/third-party/gtest/googletest/src/gtest-death-test.cc:1214:13: note: by argument 1 of type ‘const void*’ to ‘void testing::internal::StackLowerThanAddress(const void*, bool*)’ declared here
+ 1214 | static void StackLowerThanAddress(const void* ptr, bool* result) {
+      |             ^~~~~~~~~~~~~~~~~~~~~
+/klich26/workspace/projects/lab05/third-party/gtest/googletest/src/gtest-death-test.cc:1222:7: note: ‘dummy’ declared here
+ 1222 |   int dummy;
+      |       ^~~~~
+[ 33%] Linking CXX static library libgtest.a
+[ 33%] Built target gtest
+[ 41%] Building CXX object third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o
+[ 50%] Linking CXX static library libgtest_main.a
+[ 50%] Built target gtest_main
+[ 58%] Building CXX object CMakeFiles/check.dir/tests/test1.cpp.o
+[ 66%] Linking CXX executable check
+[ 66%] Built target check
+[ 75%] Building CXX object third-party/gtest/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.o
+[ 83%] Linking CXX static library libgmock.a
+[ 83%] Built target gmock
+[ 91%] Building CXX object third-party/gtest/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o
+[100%] Linking CXX static library libgmock_main.a
+[100%] Built target gmock_main
+
+$ cmake --build _build --target test
+Running tests...
+Test project /klich26/workspace/projects/lab05/_build
+    Start 1: check
+1/1 Test #1: check ............................   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.01 sec
+
+
+$_build/check 
+Running main() from /klich26/workspace/projects/lab05/third-party/gtest/googletest/src/gtest_main.cc
+[==========] Running 1 test from 1 test case.
+[----------] Global test environment set-up.
+[----------] 1 test from Print
+[ RUN      ] Print.InFileStream
+[       OK ] Print.InFileStream (0 ms)
+[----------] 1 test from Print (1 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test case ran. (1 ms total)
+[  PASSED  ] 1 test.
+
+
+$cmake --build _build --target test -- ARGS=--verbose
+Running tests...
+UpdateCTestConfiguration  from :/klich26/workspace/projects/lab05/_build/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/klich26/workspace/projects/lab05/_build/DartConfiguration.tcl
+Test project /klich26/workspace/projects/lab05/_build
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: check
+
+1: Test command: /klich26/workspace/projects/lab05/_build/check
+1: Working Directory: /klich26/workspace/projects/lab05/_build
+1: Test timeout computed to be: 10000000
+1: Running main() from /klich26/workspace/projects/lab05/third-party/gtest/googletest/src/gtest_main.cc
+1: [==========] Running 1 test from 1 test case.
+1: [----------] Global test environment set-up.
+1: [----------] 1 test from Print
+1: [ RUN      ] Print.InFileStream
+1: [       OK ] Print.InFileStream (0 ms)
+1: [----------] 1 test from Print (0 ms total)
+1: 
+1: [----------] Global test environment tear-down
+1: [==========] 1 test from 1 test case ran. (0 ms total)
+1: [  PASSED  ] 1 test.
+1/1 Test #1: check ............................   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.01 sec
+
+
+
+$ gsed -i 's/lab04/lab05/g' README.md
+$ gsed -i 's/\(DCMAKE_INSTALL_PREFIX=_install\)/\1 -DBUILD_TESTS=ON/' .travis.yml
+$ gsed -i '/cmake --build _build --target install/a\
+- cmake --build _build --target test -- ARGS=--verbose
+' .travis.yml
+
+
+
+$git push origin master
+Username for 'https://github.com': klich26
+Password for 'https://klich26@github.com': 
+Enumerating objects: 237, done.
+Counting objects: 100% (237/237), done.
+Delta compression using up to 16 threads
+Compressing objects: 100% (208/208), done.
+Writing objects: 100% (236/236), 1.00 MiB | 2.41 MiB/s, done.
+Total 236 (delta 87), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (87/87), done.
+remote: 
+remote: Create a pull request for 'master' on GitHub by visiting:
+remote:      https://github.com/klich26/lab05/pull/new/master
+remote: 
+To https://github.com/klich26/lab05.git
+ * [new branch]      master -> master
+
+
+
